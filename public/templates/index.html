@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akapurgo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Optional: Adding Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Akapurgo</h1>
+    <h2>Akamai Cache Purging made easy</h2>
+    <form id="purge-form">
+        <label for="purge-type">Select purge type:</label>
+        <select id="purge-type" name="purge-type">
+            <option value="urls">URLs</option>
+            <option value="cache-tags">Cache Tags</option>
+        </select>
+
+        <label for="action-type">Select action:</label>
+        <select id="action-type" name="action-type">
+            <option value="invalidate">Invalidate</option>
+            <option value="delete">Delete</option>
+        </select>
+
+        <label for="environment">Select environment:</label>
+        <select id="environment" name="environment">
+            <option value="production">Production</option>
+            <option value="staging">Staging</option>
+        </select>
+
+        <label for="paths">Enter paths/tags to purge (one per line):</label>
+        <textarea id="paths" name="paths" placeholder="/example/path1
+/example/path2"></textarea>
+
+        <button type="submit">
+            <i class="fas fa-trash-alt"></i> Purge
+        </button>
+
+        <div class="message" id="message"></div>
+    </form>
+</div>
+<script src="/static/script.js"></script>
+</body>
+</html>

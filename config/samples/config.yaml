@@ -1,0 +1,8 @@
+---
+server:
+  listenAddress: "127.0.0.1:8080"
+akamai:
+  host: "https://akamai.example.com"
+  clientsecret: "your-client-secret"
+  clientToken: "your-client-token"
+  accessToken: "your-access-token"
