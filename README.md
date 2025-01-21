@@ -66,6 +66,18 @@ To run the project, use the following command:
 go run cmd/main.go
 ```
 
+For purging content, the application provides a POST endpoint at `/api/v1/purge`. The request body should include the following fields:
+```json
+{
+    "purgeType": "urls", // "urls" or "cache-tags"
+    "actionType": "invalidate", // "invalidate" or "delete"
+    "environment": "production", // "production" or "staging"
+    "paths": [ // List of paths to purge or cache tags to delete (depending on the purgeType)
+      "/path1",
+      "/path2"
+    ]
+}
+```
 ## Logging
 The project includes extensive logging capabilities. The logs can be configured in the config.yaml file under the logs section.  Example log fields:  
 * REQUEST:method: HTTP method of the request.
