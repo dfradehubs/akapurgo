@@ -42,3 +42,20 @@ document.getElementById('purge-form').addEventListener('submit', async function(
         messageElement.className = 'message error';
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const purgeTypeSelect = document.getElementById("purge-type");
+    const pathsTextarea = document.getElementById("paths");
+
+    // Definir los placeholders para cada opción
+    const placeholders = {
+        "urls": "https://domain.com/example/path1\nhttps://domain.com/example/path2",
+        "cache-tags": "tag1\ntag2\ntag3"
+    };
+
+    // Actualizar el placeholder cuando cambie el tipo de purga
+    purgeTypeSelect.addEventListener("change", (event) => {
+        const selectedType = event.target.value;
+        pathsTextarea.placeholder = placeholders[selectedType] || "";
+    });
+});

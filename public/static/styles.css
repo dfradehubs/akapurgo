@@ -111,3 +111,27 @@ textarea::placeholder {
     white-space: pre-wrap;
     overflow-wrap: break-word;
 }
+
+/* Responsive logo styling */
+.logo-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.logo {
+    max-width: 100%; /* Prevents the logo from exceeding its container width */
+    height: auto; /* Maintains the aspect ratio */
+    width: 200px; /* Default width for larger screens */
+}
+
+@media (max-width: 600px) {
+    .logo {
+        width: 150px; /* Adjust size for smaller screens */
+    }
+}
+
+@media (max-width: 400px) {
+    .logo {
+        width: 100px; /* Adjust size for very small screens */
+    }
+}

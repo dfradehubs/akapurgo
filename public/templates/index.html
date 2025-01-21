@@ -11,7 +11,10 @@
 </head>
 <body>
 <div class="container">
-    <h1>Akapurgo</h1>
+    <div class="logo-container">
+        <img src="/static/logo.png" alt="Akapurgo Logo" class="logo">
+    </div>
+    <h1>AkapurGo</h1>
     <h2>Akamai Cache Purging made easy</h2>
     <form id="purge-form">
         <label for="purge-type">Select purge type:</label>
@@ -33,8 +36,8 @@
         </select>
 
         <label for="paths">Enter paths/tags to purge (one per line):</label>
-        <textarea id="paths" name="paths" placeholder="/example/path1
-/example/path2"></textarea>
+        <textarea id="paths" name="paths" placeholder="https://domain.com/example/path1
+https://domain.com/example/path2"></textarea>
 
         <button type="submit">
             <i class="fas fa-trash-alt"></i> Purge
