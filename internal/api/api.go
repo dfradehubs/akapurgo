@@ -21,10 +21,8 @@ var (
 func PurgeHandler(ctx v1alpha1.Context) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 
-		if ctx.Config.Logs.ShowAccessLogs {
-			logFields := GetRequestLogFields(c.Request(), ctx.Config.Logs.AccessLogsFields)
-			ctx.Logger.Infow("request", logFields...)
-		}
+		// Log the request when the function ends
+		defer LogRequest(c, ctx)
 
 		// Parse the JSON body from the request and validate the body
 		if err := c.BodyParser(&req); err != nil {
@@ -94,10 +92,6 @@ func PurgeHandler(ctx v1alpha1.Context) func(c *fiber.Ctx) error {
 			})
 		}
 
-		if ctx.Config.Logs.ShowAccessLogs {
-			logFields := GetResponseLogFields(c.Response(), ctx.Config.Logs.AccessLogsFields)
-			ctx.Logger.Infow("response", logFields...)
-		}
 		defer resp.Body.Close()
 
 		// Decode the Akamai response

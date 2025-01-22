@@ -1,6 +1,8 @@
 package api
 
 import (
+	"akapurgo/api/v1alpha1"
+	"github.com/gofiber/fiber/v2"
 	"github.com/valyala/fasthttp"
 	"regexp"
 	"strconv"
@@ -157,4 +159,14 @@ func GetResponseLogFields(resp *fasthttp.Response, configurationFields []string)
 	}
 
 	return logFields
+}
+
+// LogRequest
+func LogRequest(c *fiber.Ctx, ctx v1alpha1.Context) {
+	if ctx.Config.Logs.ShowAccessLogs {
+		logFieldsReq := GetResponseLogFields(c.Response(), ctx.Config.Logs.AccessLogsFields)
+		logFieldsResp := GetRequestLogFields(c.Request(), ctx.Config.Logs.AccessLogsFields)
+		logFields := append(logFieldsReq, logFieldsResp...)
+		ctx.Logger.Infow("request", logFields...)
+	}
 }

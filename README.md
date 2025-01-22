@@ -55,7 +55,6 @@ logs:
     - REQUEST_HEADER:x-real-ip
 
     - RESPONSE:status
-    - RESPONSE:proto
 
     - RESPONSE_HEADER:content-length
 ```
@@ -90,7 +89,6 @@ The project includes extensive logging capabilities. The logs can be configured 
 * REQUEST_HEADER:x-forwarded-for: X-Forwarded-For header of the request.
 * REQUEST_HEADER:x-real-ip: X-Real-IP header of the request.
 * RESPONSE:status: HTTP status of the response.
-* RESPONSE:proto: Protocol of the response.
 * RESPONSE_HEADER:content-length: Content-Length header of the response.
 
 > Note:

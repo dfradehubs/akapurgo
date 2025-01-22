@@ -21,6 +21,5 @@ logs:
     - REQUEST_HEADER:x-real-ip
 
     - RESPONSE:status
-    - RESPONSE:proto
 
     - RESPONSE_HEADER:content-length
