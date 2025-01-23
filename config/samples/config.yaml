@@ -10,6 +10,9 @@ akamai:
   access_token: "your-access-token"
 logs:
   show_access_logs: true
+  jwt_user:
+    enabled: true
+    header: "Cookie"
   access_logs_fields:
     - REQUEST:method
     - REQUEST:host

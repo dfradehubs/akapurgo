@@ -2,6 +2,8 @@ package commons
 
 import (
 	"akapurgo/api/v1alpha1"
+	"encoding/base64"
+	"encoding/json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/valyala/fasthttp"
 	"regexp"
@@ -74,8 +76,12 @@ func replaceRequestHeaderTags(req *fasthttp.Request, textToProcess string) (resu
 }
 
 // GetRequestLogFields returns the fields attached to a log message for the given HTTP request
-func GetRequestLogFields(req *fasthttp.Request, configurationFields []string) []interface{} {
+func GetRequestLogFields(req *fasthttp.Request, configurationFields []string, ctx v1alpha1.Context) []interface{} {
 	var logFields []interface{}
+
+	if ctx.Config.Logs.JwtUser.Enabled {
+		logFields = addJwtUser(ctx, logFields, req)
+	}
 
 	for _, field := range configurationFields {
 
@@ -166,6 +172,43 @@ func GetResponseLogFields(resp *fasthttp.Response, configurationFields []string,
 	return logFields
 }
 
+// addJwtUser
+func addJwtUser(ctx v1alpha1.Context, logFields []interface{}, req *fasthttp.Request) []interface{} {
+	cookie := string(req.Header.Peek(ctx.Config.Logs.JwtUser.Header))
+	if cookie != "" {
+		jwtPayload := strings.Split(cookie, ".")
+		if len(jwtPayload) != 3 {
+			ctx.Logger.Errorf("Invalid JWT format: expected 3 parts but got %d\n", len(jwtPayload))
+			return logFields
+		}
+
+		jwtPart := strings.TrimSpace(jwtPayload[1])
+		jwtPart = strings.ReplaceAll(jwtPart, "\n", "")
+		jwtPart = strings.ReplaceAll(jwtPart, "\r", "")
+		jwtPart = strings.ReplaceAll(jwtPart, " ", "")
+
+		jwtDecoded, err := base64.RawURLEncoding.DecodeString(jwtPart)
+		if err != nil {
+			ctx.Logger.Errorf("Failed to decode JWT payload: %v\n", err)
+			return logFields
+		}
+
+		var payload map[string]interface{}
+		if err := json.Unmarshal(jwtDecoded, &payload); err != nil {
+			ctx.Logger.Errorf("Failed to parse JWT payload: %v\n", err)
+			return logFields
+		}
+
+		email, ok := payload["email"].(string)
+		if ok {
+			logFields = append(logFields, "jwt_user", email)
+			return logFields
+		}
+	}
+
+	return logFields
+}
+
 // LogRequest logs the request and response of a given HTTP request
 func LogRequest(ctx v1alpha1.Context) fiber.Handler {
 	return func(c *fiber.Ctx) error {
@@ -181,7 +224,7 @@ func LogRequest(ctx v1alpha1.Context) fiber.Handler {
 		// Log the request
 		if ctx.Config.Logs.ShowAccessLogs {
 			logFieldsReq := GetResponseLogFields(c.Response(), ctx.Config.Logs.AccessLogsFields, duration)
-			logFieldsResp := GetRequestLogFields(c.Request(), ctx.Config.Logs.AccessLogsFields)
+			logFieldsResp := GetRequestLogFields(c.Request(), ctx.Config.Logs.AccessLogsFields, ctx)
 			logFields := append(logFieldsReq, logFieldsResp...)
 			ctx.Logger.Infow("request", logFields...)
 		}

@@ -44,6 +44,10 @@ akamai:
   accessToken: "your-access-token"
 logs:
   show_access_logs: true
+  # If you want to log an user from a JWT Token, you can enable the jwt_user option and set the header name
+  #jwt_user:
+  #  enabled: true
+  #  header: "Test"
   access_logs_fields:
     - REQUEST:method
     - REQUEST:host

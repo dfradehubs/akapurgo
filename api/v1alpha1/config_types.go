@@ -15,7 +15,11 @@ type ConfigSpec struct {
 		AccessToken  string `yaml:"access_token"`
 	} `yaml:"akamai"`
 	Logs struct {
-		ShowAccessLogs   bool     `yaml:"show_access_logs"`
+		ShowAccessLogs bool `yaml:"show_access_logs"`
+		JwtUser        struct {
+			Enabled bool   `yaml:"enabled"`
+			Header  string `yaml:"header"`
+		} `yaml:"jwt_user"`
 		AccessLogsFields []string `yaml:"access_logs_fields"`
 	} `yaml:"logs"`
 }
