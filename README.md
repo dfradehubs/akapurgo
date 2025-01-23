@@ -48,6 +48,8 @@ logs:
   #jwt_user:
   #  enabled: true
   #  header: "Test"
+  # JWT field which you want to log
+  #  jwt_field: "email"
   access_logs_fields:
     - REQUEST:method
     - REQUEST:host

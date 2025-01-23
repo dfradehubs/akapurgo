@@ -199,9 +199,9 @@ func addJwtUser(ctx v1alpha1.Context, logFields []interface{}, req *fasthttp.Req
 			return logFields
 		}
 
-		email, ok := payload["email"].(string)
+		user, ok := payload[ctx.Config.Logs.JwtUser.JwtField].(string)
 		if ok {
-			logFields = append(logFields, "jwt_user", email)
+			logFields = append(logFields, "jwt_user", user)
 			return logFields
 		}
 	}

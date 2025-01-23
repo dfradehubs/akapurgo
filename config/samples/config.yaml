@@ -13,6 +13,7 @@ logs:
   jwt_user:
     enabled: true
     header: "Cookie"
+    jwt_field: "email"
   access_logs_fields:
     - REQUEST:method
     - REQUEST:host

@@ -17,8 +17,9 @@ type ConfigSpec struct {
 	Logs struct {
 		ShowAccessLogs bool `yaml:"show_access_logs"`
 		JwtUser        struct {
-			Enabled bool   `yaml:"enabled"`
-			Header  string `yaml:"header"`
+			Enabled  bool   `yaml:"enabled"`
+			Header   string `yaml:"header"`
+			JwtField string `yaml:"jwt_field"`
 		} `yaml:"jwt_user"`
 		AccessLogsFields []string `yaml:"access_logs_fields"`
 	} `yaml:"logs"`
