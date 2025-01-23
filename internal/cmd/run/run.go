@@ -3,6 +3,7 @@ package run
 import (
 	"akapurgo/api/v1alpha1"
 	"akapurgo/internal/api"
+	"akapurgo/internal/commons"
 	"akapurgo/internal/config"
 	"akapurgo/internal/globals"
 	"fmt"
@@ -112,6 +113,9 @@ func RunCommand(cmd *cobra.Command, args []string) {
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
+
+	// Log requests
+	app.Use(commons.LogRequest(ctx))
 
 	// Define the routes
 

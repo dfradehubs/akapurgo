@@ -21,9 +21,6 @@ var (
 func PurgeHandler(ctx v1alpha1.Context) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 
-		// Log the request when the function ends
-		defer LogRequest(c, ctx)
-
 		// Parse the JSON body from the request and validate the body
 		if err := c.BodyParser(&req); err != nil {
 			ctx.Logger.Errorf("Failed to parse request: %v\n", err)
