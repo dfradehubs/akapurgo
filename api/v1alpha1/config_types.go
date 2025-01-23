@@ -4,6 +4,9 @@ package v1alpha1
 type ConfigSpec struct {
 	Server struct {
 		ListenAddress string `yaml:"listen_address"`
+		Config        struct {
+			ReadBufferSize int `yaml:"read_buffer_size"`
+		} `yaml:"config"`
 	} `yaml:"server"`
 	Akamai struct {
 		Host         string `yaml:"host"`

@@ -1,6 +1,8 @@
 ---
 server:
   listen_address: "127.0.0.1:8080"
+  #config:
+  #  read_buffer_size: 16384
 akamai:
   host: "https://akamai.example.com"
   client_secret: "your-client-secret"

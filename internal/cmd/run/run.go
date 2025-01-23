@@ -110,9 +110,16 @@ func RunCommand(cmd *cobra.Command, args []string) {
 
 	// Create a new Fiber app with the HTML template engine
 	engine := html.New(templatesPath, ".html")
-	app := fiber.New(fiber.Config{
+
+	fiberConfig := fiber.Config{
 		Views: engine,
-	})
+	}
+
+	if ctx.Config.Server.Config.ReadBufferSize != 0 {
+		fiberConfig.ReadBufferSize = ctx.Config.Server.Config.ReadBufferSize
+	}
+
+	app := fiber.New(fiberConfig)
 
 	// Log requests
 	app.Use(commons.LogRequest(ctx))

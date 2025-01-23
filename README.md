@@ -35,6 +35,8 @@ Example configuration:
 ```yaml
 server:
   listenAddress: "127.0.0.1:8080"
+  #config:
+  #  read_buffer_size: 16384
 akamai:
   host: "https://akamai.example.com"
   clientsecret: "your-client-secret"
