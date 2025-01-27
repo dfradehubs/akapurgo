@@ -106,4 +106,4 @@ You can log any header or field from the request or response by adding it to the
 Contributions are welcome! Please open an issue or submit a pull request.  
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the Apache v2.0 License.
