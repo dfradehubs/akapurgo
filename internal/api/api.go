@@ -21,6 +21,22 @@ var (
 func PurgeHandler(ctx v1alpha1.Context) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 
+		// Verify the Content-Type header
+		if c.Get("Content-Type") != "application/json" {
+			ctx.Logger.Error("Invalid content type")
+			return c.Status(fiber.StatusBadRequest).JSON(map[string]string{
+				"error": "Invalid content type",
+			})
+		}
+
+		// Verify body to be really a JSON
+		if !json.Valid(c.Body()) {
+			ctx.Logger.Error("Invalid JSON body")
+			return c.Status(fiber.StatusBadRequest).JSON(map[string]string{
+				"error": "Invalid JSON body",
+			})
+		}
+
 		// Parse the JSON body from the request and validate the body
 		if err := c.BodyParser(&req); err != nil {
 			ctx.Logger.Errorf("Failed to parse request: %v\n", err)
