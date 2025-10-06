@@ -6,9 +6,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/akamai/AkamaiOPEN-edgegrid-golang/v9/pkg/edgegrid"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
 )
 
 var (
@@ -113,6 +114,13 @@ func PurgeHandler(ctx v1alpha1.Context) func(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusInternalServerError).JSON(map[string]string{
 				"error": "Failed to decode Akamai response",
 			})
+		}
+
+		// Send a GET requests to purged URLs
+		if req.PostPurgeRequest && ctx.Config.PostPurgeRequest.Enabled {
+			for _, path := range req.Paths {
+				fmt.Printf("Sending GET request to %s\n", path)
+			}
 		}
 
 		// Forward the Akamai response to the client

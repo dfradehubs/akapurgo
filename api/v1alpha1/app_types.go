@@ -9,10 +9,11 @@ type Context struct {
 }
 
 type PurgeRequest struct {
-	PurgeType   string   `json:"purgeType"`   // "urls" or "cache-tags"
-	ActionType  string   `json:"actionType"`  // "invalidate" or "delete"
-	Environment string   `json:"environment"` // "production" or "staging"
-	Paths       []string `json:"paths"`
+	PurgeType        string   `json:"purgeType"`                  // "urls" or "cache-tags"
+	ActionType       string   `json:"actionType"`                 // "invalidate" or "delete"
+	Environment      string   `json:"environment"`                // "production" or "staging"
+	PostPurgeRequest bool     `json:"postPurgeRequest,omitempty"` // true or false
+	Paths            []string `json:"paths"`
 }
 
 type AkamaiResponse struct {
