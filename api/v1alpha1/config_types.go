@@ -14,6 +14,10 @@ type ConfigSpec struct {
 		ClientToken  string `yaml:"client_token"`
 		AccessToken  string `yaml:"access_token"`
 	} `yaml:"akamai"`
+	PostPurgeRequest struct {
+		Enabled bool              `yaml:"enabled"`
+		Headers map[string]string `yaml:"headers"`
+	} `yaml:"post_purge_request"`
 	Logs struct {
 		ShowAccessLogs bool `yaml:"show_access_logs"`
 		JwtUser        struct {

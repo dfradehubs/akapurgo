@@ -6,9 +6,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"time"
+
 	"github.com/akamai/AkamaiOPEN-edgegrid-golang/v9/pkg/edgegrid"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
 )
 
 var (
@@ -115,8 +118,53 @@ func PurgeHandler(ctx v1alpha1.Context) func(c *fiber.Ctx) error {
 			})
 		}
 
+		// Send a GET requests to purged URLs
+		if is2xx(akamaiResp.HTTPStatus) && req.PostPurgeRequest && ctx.Config.PostPurgeRequest.Enabled {
+			time.Sleep(5 * time.Second) // Wait for 5 seconds before sending GET requests
+			executePurgeRequest(req.Paths, ctx)
+		}
+
 		// Forward the Akamai response to the client
 		ctx.Logger.Infof(`akamai-response,detail='%s',status=%d`, akamaiResp.Detail, akamaiResp.HTTPStatus)
 		return c.Status(resp.StatusCode).JSON(akamaiResp)
 	}
+}
+
+func executePurgeRequest(paths []string, ctx v1alpha1.Context) {
+	client := &http.Client{}
+
+	for _, path := range paths {
+		// Create the HTTP GET request
+		getRequest, err := http.NewRequest("GET", path, nil)
+		if err != nil {
+			ctx.Logger.Errorf("Failed to create GET request for %s: %v\n", path, err)
+			continue
+		}
+
+		// Add custom headers from configuration
+		for key, value := range ctx.Config.PostPurgeRequest.Headers {
+			getRequest.Header.Set(key, value)
+		}
+
+		// Send the GET request
+		response, err := client.Do(getRequest)
+		if err != nil {
+			ctx.Logger.Errorf("Failed to send GET request to %s: %v\n", path, err)
+			continue
+		}
+
+		// Read and discard the body to complete the request properly
+		_, err = io.ReadAll(response.Body)
+		if err != nil {
+			ctx.Logger.Warnf("Failed to read response body from %s: %v\n", path, err)
+		}
+		response.Body.Close()
+
+		// Log the response status
+		ctx.Logger.Infof("GET request to %s returned status code %d\n", path, response.StatusCode)
+	}
+}
+
+func is2xx(status int) bool {
+	return status >= 200 && status < 300
 }

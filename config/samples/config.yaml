@@ -8,6 +8,12 @@ akamai:
   client_secret: "your-client-secret"
   client_token: "your-client-token"
   access_token: "your-access-token"
+
+post_purge_request:
+  enabled: true
+  headers:
+    X-Custom-Header: "value"
+
 logs:
   show_access_logs: true
   jwt_user:
