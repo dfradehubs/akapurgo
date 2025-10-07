@@ -7,6 +7,7 @@ document.getElementById('purge-form').addEventListener('submit', async function(
     const purgeType = document.getElementById('purge-type').value;
     const actionType = document.getElementById('action-type').value;
     const environment = document.getElementById('environment').value;
+    const postPurgeRequest = document.getElementById('post-request').checked;
     const paths = document.getElementById('paths').value.trim().split('\n').filter(Boolean);
 
     if (paths.length === 0) {
@@ -25,6 +26,7 @@ document.getElementById('purge-form').addEventListener('submit', async function(
                 purgeType,
                 actionType,
                 environment,
+                postPurgeRequest,
                 paths
             })
         });
